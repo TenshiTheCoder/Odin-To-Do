@@ -14,58 +14,6 @@ export class Project{
   }
 }
 
-export function createProject(project) {
-  const projectContainer = document.createElement("div");
-  projectContainer.classList.add("project-container");
-
-  const projectTitle = document.createElement("h2");
-  projectTitle.textContent = project.title;
-  projectTitle.classList.add("project-title");
-  
-  const editTitle = document.createElement("button");
-  editTitle.textContent = "Edit Title";
-  
-  const projectDescription = document.createElement("p");
-  projectDescription.textContent = project.description;
-  projectDescription.classList.add("project-description");
-
-  const editDescription = document.createElement("button");
-  editDescription.textContent = "Edit This Description for your project";
-  editDescription.classList.add("description-edit");
-
-  const projectDate = document.createElement("p");
-  projectDate.textContent = project.dueDate.toLocaleDateString();
-  projectDate.classList.add("project-date");
-
-  const changeDate = document.createElement("button");
-  changeDate.textContent = "Change Date";
-  changeDate.classList.add("change-date");
-
-  const priorityLabel = document.createElement("label");
-  priorityLabel.textContent = "Is Priority: ";
-  priorityLabel.htmlFor = "priority";
-
-  const isPriority = document.createElement("input");
-  isPriority.type = "checkbox";
-  isPriority.classList.add("priority-button");
-  isPriority.id = "priority";
-  isPriority.checked = project.priority;
-
-  projectContainer.append(
-    projectTitle, 
-    editTitle, 
-    projectDescription, 
-    editDescription, 
-    projectDate, 
-    changeDate, 
-    priorityLabel, 
-    isPriority
-  );
-  mainContainer.appendChild(projectContainer);
-
-  return {editDescription, editTitle, changeDate, isPriority};
-}
-
 export function buildDialog() {
   const dialog = document.createElement("dialog");
   dialog.id = "project-dialog";
@@ -115,8 +63,7 @@ export function buildDialog() {
   timeInput.id = "time-input";
   timeInput.type = "time";
   timeInput.name = "time";
-  timeInput.valueAsDate = new Date();
-
+  
   const priorityInputLabel = document.createElement("label");
   priorityInputLabel.htmlFor = "priority-input";
   priorityInputLabel.textContent = "Priority?";
@@ -203,16 +150,125 @@ export function buildDialog() {
   )
   dialog.appendChild(projectForm);
 
-  return {dialog, titleInput, descriptionInput, dateInput, timeInput, priorityInput};
+  return {
+    dialog, 
+    titleInput, 
+    descriptionInput,
+    dateInput, 
+    timeInput, 
+    priorityInput, 
+    currentMode
+  };
+};
+
+export function createProject(project) {
+  const projectContainer = document.createElement("div");
+  projectContainer.classList.add("project-container");
+
+  const projectTitle = document.createElement("h2");
+  projectTitle.textContent = project.title;
+  projectTitle.classList.add("project-title");
+  
+  const editTitle = document.createElement("button");
+  editTitle.textContent = "Edit Title";
+  
+  const projectDescription = document.createElement("p");
+  projectDescription.textContent = project.description;
+  projectDescription.classList.add("project-description");
+
+  const editDescription = document.createElement("button");
+  editDescription.textContent = "Edit Description";
+  editDescription.classList.add("description-edit");
+
+  const projectDate = document.createElement("p");
+  projectDate.textContent = project.dueDate.toLocaleDateString();
+  projectDate.classList.add("project-date");
+
+  const changeDate = document.createElement("button");
+  changeDate.textContent = "Change Date";
+  changeDate.classList.add("change-date");
+
+  const projectTime = document.createElement("p");
+    if (project.timeDue) {
+    // timeDue is a Date object if provided
+    projectTime.textContent = project.timeDue.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  } else {
+    projectTime.textContent = "No time set";
+  }
+
+  const changeTime = document.createElement("button");
+  changeTime.textContent = "Change Time";
+  changeTime.classList.add("change-time");
+
+  const priorityLabel = document.createElement("label");
+  priorityLabel.textContent = "Is Priority: ";
+  priorityLabel.htmlFor = "priority";
+
+  const isPriority = document.createElement("input");
+  isPriority.type = "checkbox";
+  isPriority.classList.add("priority-button");
+  isPriority.id = "priority";
+  isPriority.checked = project.isPriority;
+
+  projectContainer.append(
+    projectTitle, 
+    editTitle, 
+    projectDescription, 
+    editDescription, 
+    projectDate, 
+    changeDate, 
+    projectTime,
+    changeTime,
+    priorityLabel, 
+    isPriority
+  );
+  mainContainer.appendChild(projectContainer);
+
+  return {editDescription, editTitle, changeDate, changeTime, isPriority};
 }
 
 export function attachListeners(project) {
-  const {editTitle, editDescription, isPriority, changeDate} = createProject()
-  const {dialog, titleInput, descriptionInput, dateInput} = buildDialog();
+  const {editTitle, editDescription, isPriority, changeDate, changeTime} = createProject()
+  const {dialog, titleInput, descriptionInput, dateInput, timeInput} = buildDialog();
 
   editTitle.addEventListener("click", () => {
-    dialog.show();
+    dialog.showModal();
     titleInput.focus();
+  });
+
+  editDescription.addEventListener("click", () => {
+    dialog.showModal();
+    descriptionInput.focus();
+  }); 
+    
+  changeDate.addEventListener("click", () => {
+    dialog.showModal();
+    dateInput.focus();
+  });
+
+  changeTime.addEventListener("click", () => {
+    dialog.showModal();
+    timeInput.focus();
   })
+
+  isPriority.addEventListener("change", () => {
+    console.log("Priority changed:", isPriority.checked);
+  });
 }
 
+function newProject() {
+  const newProjectButton = document.createElement("button");
+  newProjectButton.textContent = "New Project";
+
+  newProjectButton.addEventListener("click", () => {
+    const dialogData = buildDialog();
+    dialogData.dialog.showModal();
+  })
+
+  mainContainer.appendChild(newProjectButton);
+}
+
+newProject();

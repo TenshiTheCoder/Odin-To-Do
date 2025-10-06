@@ -10,8 +10,3 @@ const initialProject = new Project(
 );
 
 createProject(initialProject);
-
-// console.log("Webpack server up and running");
-
-// const mainContainer = document.querySelector("#main");
-// mainContainer.textContent = "Hello, To-Do!";
