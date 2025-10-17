@@ -2,6 +2,7 @@ import "./project.css";
 
 const body = document.querySelector("#body");
 const mainContainer = document.querySelector("#main");
+export let currentProject = null;
 
 export class Project{
   constructor(title, description, dueDate, timeDue, isPriority = false) {
@@ -75,7 +76,7 @@ export function buildDialog() {
   priorityInput.checked = false;
 
   let currentMode = "create";
-  let currentProject = null;
+  
 
   projectForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -115,7 +116,6 @@ export function buildDialog() {
           currentProject.dueDate = dateInput.value;
           currentProject.timeDue = "";
         }
-
         currentProject.isPriority = priorityInput.checked;
       }
     })
@@ -213,6 +213,9 @@ export function createProject(project) {
   isPriority.id = "priority";
   isPriority.checked = project.isPriority;
 
+  const toDoContainer = document.createElement("div");
+  toDoContainer.id = "todo-container";
+
   projectContainer.append(
     projectTitle, 
     editTitle, 
@@ -223,11 +226,12 @@ export function createProject(project) {
     projectTime,
     changeTime,
     priorityLabel, 
-    isPriority
+    isPriority,
+    toDoContainer
   );
   mainContainer.appendChild(projectContainer);
 
-  return {editDescription, editTitle, changeDate, changeTime, isPriority};
+  return {editDescription, editTitle, changeDate, changeTime, isPriority, toDoContainer};
 }
 
 export function attachListeners(project) {
@@ -270,5 +274,6 @@ function newProject() {
 
   mainContainer.appendChild(newProjectButton);
 }
+
 
 newProject();
