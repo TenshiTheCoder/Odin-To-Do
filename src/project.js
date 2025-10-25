@@ -1,8 +1,11 @@
-import "./project.css";
+import "./styles.css";
+import { themeButton } from "./themeButton.js";
+
+export let currentProject = null;
 
 const body = document.querySelector("#body");
 const mainContainer = document.querySelector("#main");
-export let currentProject = null;
+const footerContainer = document.querySelector("#footer");
 
 export class Project{
   constructor(title, description, dueDate, timeDue, isPriority = false) {
@@ -15,6 +18,7 @@ export class Project{
   }
 }
 
+// Function to build dialog for project creation
 export function buildDialog() {
   const dialog = document.createElement("dialog");
   dialog.id = "project-dialog";
@@ -27,7 +31,8 @@ export function buildDialog() {
   titleInputLabel.htmlFor = "title-input";
   titleInputLabel.textContent = "Project Title: ";
 
-  const titleInput = document.createElement("input")
+  const titleInput = document.createElement("input");
+  titleInput.classList.add("title-input");
   titleInput.id = "title-input";
   titleInput.name = "title";
   titleInput.type = "text";
@@ -102,7 +107,7 @@ export function buildDialog() {
         descriptionValue,
         dueDate,
         timeDue,
-        priorityInput.checked,
+        priorityInput.checked
       )
     } else if (currentMode === "edit") {
         currentProject.title = titleInput.value;
@@ -178,7 +183,7 @@ export function createProject(project) {
 
   const editDescription = document.createElement("button");
   editDescription.textContent = "Edit Description";
-  editDescription.classList.add("description-edit");
+  editDescription.classList.add("change-description");
 
   const projectDate = document.createElement("p");
   projectDate.textContent = project.dueDate.toLocaleDateString();
@@ -234,37 +239,54 @@ export function createProject(project) {
   return {editDescription, editTitle, changeDate, changeTime, isPriority, toDoContainer};
 }
 
+// This is not fine, getting a TypeError when I call it
 export function attachListeners(project) {
-  const {editTitle, editDescription, isPriority, changeDate, changeTime} = createProject()
-  const {dialog, titleInput, descriptionInput, dateInput, timeInput} = buildDialog();
+  // const {editTitle, editDescription, isPriority, changeDate, changeTime} = createProject(project);
+  // const {dialog, titleInput, descriptionInput, dateInput, timeInput} = buildDialog();
+  // const projectContainers = document.querySelector(".project-container");
+  const projectChangeTitle = document.querySelector(".edit-title");
+  const projectEditDescription = document.querySelector(".edit-description");
+  const projectChangeDate = document.querySelector(".change-date");
+  const projectChangeTime = document.querySelector(".change-time");
 
-  editTitle.addEventListener("click", () => {
+  const dialog = document.querySelector("#project-dialog");
+  const dialogTitleInput = document.querySelector("#title-input");
+  const dialogDescriptionInput = document.querySelector("#description-input");
+  const dialogDateInput = document.querySelector("#date-input");
+  const dialogTimeInput = document.querySelector("#time-input");
+  const dialogIsPriority = document.querySelector("#priority-button");
+
+
+  projectChangeTitle.addEventListener("click", () => {
     dialog.showModal();
-    titleInput.focus();
+    dialogTitleInput.focus();
   });
 
-  editDescription.addEventListener("click", () => {
+  projectEditDescription.addEventListener("click", () => {
     dialog.showModal();
-    descriptionInput.focus();
+    dialogDescriptionInput.focus();
   }); 
     
-  changeDate.addEventListener("click", () => {
+  projectChangeDate.addEventListener("click", () => {
     dialog.showModal();
-    dateInput.focus();
+    dialogDateInput.focus();
   });
 
-  changeTime.addEventListener("click", () => {
+  projectChangeTime.addEventListener("click", () => {
     dialog.showModal();
-    timeInput.focus();
+    dialogTimeInput.focus();
   })
 
-  isPriority.addEventListener("change", () => {
+  projectIsPriority.addEventListener("change", () => {
     console.log("Priority changed:", isPriority.checked);
   });
 }
 
+
+// This is fine, function works as intended :)
 function newProject() {
   const newProjectButton = document.createElement("button");
+  newProjectButton.classList.add("new-project");
   newProjectButton.textContent = "New Project";
 
   newProjectButton.addEventListener("click", () => {
@@ -274,6 +296,5 @@ function newProject() {
 
   mainContainer.appendChild(newProjectButton);
 }
-
 
 newProject();
