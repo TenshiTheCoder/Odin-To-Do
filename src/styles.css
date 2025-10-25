@@ -14,7 +14,7 @@ header {
   margin: auto;
   padding-top: 8px;
   text-align: center;
-  text-shadow: 2px 2px 6px black;
+  text-shadow: 2px 2px 4px black;
 }
 
 /* Theme Button Styling */
@@ -62,6 +62,57 @@ header {
 #project-form {
   display: flex;
   flex-direction: column;
+}
+
+.title-label, .description-label,
+.date-label, .time-label {
+  margin-bottom: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+} 
+
+#title-input, #description-input,
+#date-input, #time-input {
+  margin-bottom: 12px;
+}
+
+#description-input {
+  height: 150px;
+}
+
+#title-input:focus, #description-input:focus,
+#date-input:focus, #time-input:focus {
+  border: 2px solid blue;
+  outline: none;
+}
+
+.priority-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.form-button-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.submit-button, .cancel-button {
+  width: fit-content;
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid black;
+  transition: 0.4s ease-in-out;
+  box-shadow: 2px 2px 2px black;
+  perspective: 10px;
+}
+
+.submit-button:hover, .cancel-button:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  outline: 2px black;
+  
 }
 
 /* Project Styling */

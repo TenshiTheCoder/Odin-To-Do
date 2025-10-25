@@ -28,6 +28,7 @@ export function buildDialog() {
   projectForm.id = "project-form";
 
   const titleInputLabel = document.createElement("label");
+  titleInputLabel.classList.add("title-label");
   titleInputLabel.htmlFor = "title-input";
   titleInputLabel.textContent = "Project Title: ";
 
@@ -41,6 +42,7 @@ export function buildDialog() {
   titleInput.required = true;
 
   const descriptionLabel = document.createElement("label");
+  descriptionLabel.classList.add("description-label");
   descriptionLabel.htmlFor = "description-input";
   descriptionLabel.textContent = "Description: ";
 
@@ -51,6 +53,7 @@ export function buildDialog() {
   descriptionInput.placeholder = "Enter description here";
 
   const dateLabel = document.createElement("label");
+  dateLabel.classList.add("date-label");
   dateLabel.htmlFor = "date-input";
   dateLabel.textContent = "Date: ";
 
@@ -64,21 +67,27 @@ export function buildDialog() {
   const timeLabel = document.createElement("label");
   timeLabel.classList.add("time-label");
   timeLabel.htmlFor = "time-input";
+  timeLabel.textContent = "Time: ";
 
   const timeInput = document.createElement("input");
   timeInput.id = "time-input";
   timeInput.type = "time";
   timeInput.name = "time";
   
+  const priorityContainer = document.createElement("div");
+
   const priorityInputLabel = document.createElement("label");
   priorityInputLabel.htmlFor = "priority-input";
-  priorityInputLabel.textContent = "Priority?";
+  priorityInputLabel.textContent = "Priority: ";
 
   const priorityInput = document.createElement("input");
   priorityInput.type = "checkbox";
   priorityInput.name = "priority";
   priorityInput.id = "priority-input";
   priorityInput.checked = false;
+
+  priorityContainer.append(priorityInputLabel, priorityInput);
+  priorityContainer.classList.add("priority-container");
 
   let currentMode = "create";
   
@@ -125,6 +134,9 @@ export function buildDialog() {
       }
     })
   
+  const formButtonContainer = document.createElement("div");
+  formButtonContainer.classList.add("form-button-container");
+
   const submitButton = document.createElement("button");
   submitButton.type = "submit";
   submitButton.textContent = "Submit";
@@ -139,6 +151,8 @@ export function buildDialog() {
     dialog.close();
   })
 
+  formButtonContainer.append(submitButton, cancelButton);
+
   projectForm.append(
     titleInputLabel,
     titleInput,
@@ -148,10 +162,8 @@ export function buildDialog() {
     dateInput,
     timeLabel,
     timeInput,
-    priorityInputLabel,
-    priorityInput,
-    submitButton, 
-    cancelButton
+    priorityContainer,
+    formButtonContainer
   )
   dialog.appendChild(projectForm);
 

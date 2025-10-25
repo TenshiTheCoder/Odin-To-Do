@@ -7,10 +7,19 @@ export function toDoDialog(project){
   const tdForm = document.createElement("form");  
   tdForm.classList.add = "td-form";
 
+  const tdButton = document.createElement("button");
+  tdButton.classList.add("td-open");
+  tdButton.textContent = "Add To-Do";
+  tdButton.addEventListener("click", () => {
+    tdDialog.showModal;
+  });
+
+
+
   const tdTitleLabel = document.createElement("label");
   tdTitleLabel.classList.add = "title-label";
   tdTitleLabel.htmlFor = "tdTitle";
-  tdTitleLabel.textContent = "Title: "
+  tdTitleLabel.textContent = "Title: ";
 
   const tdTitle = document.createElement("input");
   tdTitle.id = "tdTitle";
