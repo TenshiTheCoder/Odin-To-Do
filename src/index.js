@@ -1,4 +1,4 @@
-import { Project, createProject, themeButton } from "./barrel";
+import { Project, createProject, themeButton, projects } from "./barrel";
 import { attachListeners } from "./project";
 
 const mainContainer = document.querySelector("#main");
@@ -12,6 +12,7 @@ const initialProject = new Project(
 );
 
 createProject(initialProject);
+projects.push(initialProject);
 // attachListeners(initialProject);
 themeButton();
 

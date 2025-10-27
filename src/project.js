@@ -1,3 +1,4 @@
+import { submitProjectForm } from "./barrel.js";
 import "./styles.css";
 import { themeButton } from "./themeButton.js";
 
@@ -5,7 +6,6 @@ export let currentProject = null;
 
 const body = document.querySelector("#body");
 const mainContainer = document.querySelector("#main");
-const footerContainer = document.querySelector("#footer");
 
 export class Project{
   constructor(title, description, dueDate, timeDue, isPriority = false) {
@@ -17,6 +17,8 @@ export class Project{
     this.todos = [];
   }
 }
+
+export const projects = [];
 
 // Function to build dialog for project creation
 export function buildDialog() {
@@ -90,50 +92,7 @@ export function buildDialog() {
   priorityContainer.classList.add("priority-container");
 
   let currentMode = "create";
-  
 
-  projectForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const titleValue = titleInput.value;
-    const descriptionValue = descriptionInput.value;
-    const dateValue = dateInput.value;
-    const timeValue = timeInput.value;
-
-    let dueDate, timeDue;
-    if(timeValue) {
-      const dueDateTime = new Date(`${dateValue}T${timeValue}`);
-      dueDate = dueDateTime;
-      timeDue = dueDateTime;
-    } else {
-      dueDate = dateValue;
-      timeDue = "";
-    }
-
-    if(currentMode === "create") {
-      const newProject = new Project (
-        titleValue,
-        descriptionValue,
-        dueDate,
-        timeDue,
-        priorityInput.checked
-      )
-    } else if (currentMode === "edit") {
-        currentProject.title = titleInput.value;
-        currentProject.description = descriptionInput.value;
-
-        if (timeValue) {
-          const combinedDateTime = new Date(`${dateInput.value}T${timeInput.value}`);
-          currentProject.dueDate = combinedDateTime;
-          currentProject.timeDue = combinedDateTime;
-        } else {
-          currentProject.dueDate = dateInput.value;
-          currentProject.timeDue = "";
-        }
-        currentProject.isPriority = priorityInput.checked;
-      }
-    })
-  
   const formButtonContainer = document.createElement("div");
   formButtonContainer.classList.add("form-button-container");
 
@@ -141,6 +100,10 @@ export function buildDialog() {
   submitButton.type = "submit";
   submitButton.textContent = "Submit";
   submitButton.classList.add("submit-button");
+
+  submitButton.addEventListener("click", () => {
+    submitProjectForm();
+  })
   
   const cancelButton = document.createElement("button");
   cancelButton.type = "button";
@@ -187,6 +150,7 @@ export function createProject(project) {
   projectTitle.classList.add("project-title");
   
   const editTitle = document.createElement("button");
+  editTitle.id = "edit-title";
   editTitle.textContent = "Edit Title";
   
   const projectDescription = document.createElement("p");
@@ -207,7 +171,6 @@ export function createProject(project) {
 
   const projectTime = document.createElement("p");
     if (project.timeDue) {
-    // timeDue is a Date object if provided
     projectTime.textContent = project.timeDue.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit"
@@ -251,52 +214,7 @@ export function createProject(project) {
   return {editDescription, editTitle, changeDate, changeTime, isPriority, toDoContainer};
 }
 
-// This is not fine, getting a TypeError when I call it
-export function attachListeners(project) {
-  // const {editTitle, editDescription, isPriority, changeDate, changeTime} = createProject(project);
-  // const {dialog, titleInput, descriptionInput, dateInput, timeInput} = buildDialog();
-  // const projectContainers = document.querySelector(".project-container");
-  const projectChangeTitle = document.querySelector(".edit-title");
-  const projectEditDescription = document.querySelector(".edit-description");
-  const projectChangeDate = document.querySelector(".change-date");
-  const projectChangeTime = document.querySelector(".change-time");
-
-  const dialog = document.querySelector("#project-dialog");
-  const dialogTitleInput = document.querySelector("#title-input");
-  const dialogDescriptionInput = document.querySelector("#description-input");
-  const dialogDateInput = document.querySelector("#date-input");
-  const dialogTimeInput = document.querySelector("#time-input");
-  const dialogIsPriority = document.querySelector("#priority-button");
-
-
-  projectChangeTitle.addEventListener("click", () => {
-    dialog.showModal();
-    dialogTitleInput.focus();
-  });
-
-  projectEditDescription.addEventListener("click", () => {
-    dialog.showModal();
-    dialogDescriptionInput.focus();
-  }); 
-    
-  projectChangeDate.addEventListener("click", () => {
-    dialog.showModal();
-    dialogDateInput.focus();
-  });
-
-  projectChangeTime.addEventListener("click", () => {
-    dialog.showModal();
-    dialogTimeInput.focus();
-  })
-
-  projectIsPriority.addEventListener("change", () => {
-    console.log("Priority changed:", isPriority.checked);
-  });
-}
-
-
-// This is fine, function works as intended :)
-function newProject() {
+export function newProject() {
   const newProjectButton = document.createElement("button");
   newProjectButton.classList.add("new-project");
   newProjectButton.textContent = "New Project";
@@ -310,3 +228,4 @@ function newProject() {
 }
 
 newProject();
+

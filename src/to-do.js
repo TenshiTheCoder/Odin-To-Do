@@ -10,11 +10,10 @@ export function toDoDialog(project){
   const tdButton = document.createElement("button");
   tdButton.classList.add("td-open");
   tdButton.textContent = "Add To-Do";
+  
   tdButton.addEventListener("click", () => {
     tdDialog.showModal;
   });
-
-
 
   const tdTitleLabel = document.createElement("label");
   tdTitleLabel.classList.add = "title-label";

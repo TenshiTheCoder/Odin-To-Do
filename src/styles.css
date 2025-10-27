@@ -198,10 +198,37 @@ footer {
 footer.light-theme {
   background-color: #1B1B1B;
   box-shadow: 0 -5px 5px 1px grey;
+  color: white;
 }
 
 footer.dark-theme {
   background-color: #444444;
   box-shadow: 0 -2px 3px 1px #FAFAFA;
 }
+
+.my-name {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.my-github {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  transition: 0.3s ease-in-out;
+}
+
+.my-github:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  color: pink;
+  text-decoration: underline;
+}
+
+.my-github:visited {
+  color: magenta;
+}
+
+
 
