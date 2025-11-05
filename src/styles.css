@@ -17,6 +17,11 @@ header {
   text-shadow: 2px 2px 4px black;
 }
 
+main { 
+  border: 2px solid black;
+  height: 87vh;
+}
+
 /* Theme Button Styling */
 .theme-select {
   position: fixed;
@@ -64,6 +69,7 @@ header {
   flex-direction: column;
 }
 
+/* Styling for the project creation form and labels */
 .title-label, .description-label,
 .date-label, .time-label {
   margin-bottom: 4px;
@@ -118,9 +124,10 @@ header {
 /* Project Styling */
 .new-project {
   position: fixed;
+  margin-bottom: 0px;
   padding: 4px;
   font-size: 12px;
-  top: 20px;
+  top: 22px;
   left: 20px;
   border-radius: 25px;
   border: 1px solid black;
@@ -130,11 +137,11 @@ header {
 .project-container {
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: 220px;
   margin-top: 12px;
-  margin-left: auto;
+  margin-left: 12px;
   margin-right: auto;
-  align-items: center;
+  align-items: left;
   padding: 12px;
 }
 
@@ -146,38 +153,44 @@ header {
   border: 2px solid white;
 }
 
-.project-container > button {
-  width: 100px;
-  padding: 4px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
+/* Styling for the button to edit the project */
+#edit-project {
+  align-items: center;
+  font-size: 14px;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  margin-left: auto;
 }
 
 button:hover {
   cursor: pointer;
 }
 
-.change-time {
-  margin-bottom: 12px;
+.project-top {
+  display: flex;
+  flex-direction: row;
 }
 
 .project-title {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 24px;
-  margin-top: 12px;
+  font-size: 16px;
+  text-wrap: nowrap;
+  margin-top: auto;
+  margin-right: 10px;
+  margin-bottom: 0;
+  text-align: left;
+  align-items: center;
 }
 
 .project-description {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  font-style: italic;
+  font-size: 12px; 
 }
 
 .project-date { 
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 0;
 }
 
 /* To-Do dialog styling */
@@ -192,7 +205,7 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 10vh;
+  height: 8vh;
 }
 
 footer.light-theme {

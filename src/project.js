@@ -1,6 +1,8 @@
 import { submitProjectForm } from "./barrel.js";
-import "./styles.css";
+import { format } from "date-fns";
 import { themeButton } from "./themeButton.js";
+import "./styles.css";
+
 
 export let currentProject = null;
 
@@ -15,6 +17,7 @@ export class Project{
     this.timeDue = timeDue;
     this.isPriority = isPriority;
     this.todos = [];
+    this.id = Date.now();
   }
 }
 
@@ -141,47 +144,82 @@ export function buildDialog() {
   };
 };
 
+export function handleProjectEdit(project, { dialog, titleInput, descriptionInput, dateInput, timeInput }) {
+  const newTitle = titleInput.value.trim();
+  const newDescription = descriptionInput.value.trim();
+
+  let newDateAndTime;
+    if (dateInput.value && timeInput.value) {
+        const fullDate = new Date(`${dateInput.value}T${timeInput.value}`);
+        newDateAndTime = `${format(fullDate, "MMMM d, yyyy : h:mm a")}`;
+      } else if (dateInput.value) {
+        const dateOnly = new Date(dateInput.value);
+        newDateAndTime = format(dateOnly, "MMMM d, yyyy");
+      } else if (timeInput.value) {
+        const timeOnly = new Date(`1970-01-01T${timeInput.value}`);
+        newDateAndTime = format(timeOnly, "h:mm a");
+      } else {
+        newDateAndTime = "No due date";
+      }
+
+  project.title = newTitle || project.title;
+  project.description = newDescription || project.description;
+  project.dueDate = newDateAndTime;
+
+  const projectContainer = document.querySelector(`#project-${project.id}`);
+  if (projectContainer) {
+    projectContainer.querySelector(".project-title").textContent = project.title;
+    projectContainer.querySelector(".project-description").textContent = project.description;
+    projectContainer.querySelector(".project-date").textContent = project.dueDate;
+  }
+
+  dialog.close();
+}
+
 export function createProject(project) {
   const projectContainer = document.createElement("div");
+  projectContainer.id = `project-${project.id}`;
   projectContainer.classList.add("project-container");
+
+  const projectTop = document.createElement("div");
+  projectTop.classList.add("project-top");
 
   const projectTitle = document.createElement("h2");
   projectTitle.textContent = project.title;
   projectTitle.classList.add("project-title");
   
-  const editTitle = document.createElement("button");
-  editTitle.id = "edit-title";
-  editTitle.textContent = "Edit Title";
+  const editProject = document.createElement("button");
+  editProject.id = "edit-project";
+  editProject.textContent = "Edit Project";
+
+  editProject.addEventListener("click", () => {
+  const dialogData = buildDialog();
+  const { dialog, titleInput, descriptionInput, dateInput, timeInput } = dialogData;
+
+  dialog.dataset.currentMode = "edit";
+  dialog.dataset.projectId = project.id;
+
+  titleInput.value = project.title;
+  descriptionInput.value = project.description;
+  dateInput.value = project.dueDate || "";
+  timeInput.value = project.timeDue || "";
+
+  dialog.showModal();
+});
+
+  projectTop.append(projectTitle, editProject);
   
   const projectDescription = document.createElement("p");
   projectDescription.textContent = project.description;
   projectDescription.classList.add("project-description");
 
-  const editDescription = document.createElement("button");
-  editDescription.textContent = "Edit Description";
-  editDescription.classList.add("change-description");
-
   const projectDate = document.createElement("p");
-  projectDate.textContent = project.dueDate.toLocaleDateString();
+  projectDate.textContent = project.dueDate;
   projectDate.classList.add("project-date");
 
-  const changeDate = document.createElement("button");
-  changeDate.textContent = "Change Date";
-  changeDate.classList.add("change-date");
-
   const projectTime = document.createElement("p");
-    if (project.timeDue) {
-    projectTime.textContent = project.timeDue.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  } else {
-    projectTime.textContent = "No time set";
-  }
-
-  const changeTime = document.createElement("button");
-  changeTime.textContent = "Change Time";
-  changeTime.classList.add("change-time");
+  projectTime.textContent = project.timeDue;
+  projectTime.classList.add("project-time");
 
   const priorityLabel = document.createElement("label");
   priorityLabel.textContent = "Is Priority: ";
@@ -197,21 +235,17 @@ export function createProject(project) {
   toDoContainer.id = "todo-container";
 
   projectContainer.append(
-    projectTitle, 
-    editTitle, 
-    projectDescription, 
-    editDescription, 
+    projectTop,
+    projectDescription,
     projectDate, 
-    changeDate, 
     projectTime,
-    changeTime,
     priorityLabel, 
     isPriority,
     toDoContainer
   );
   mainContainer.appendChild(projectContainer);
 
-  return {editDescription, editTitle, changeDate, changeTime, isPriority, toDoContainer};
+  return {editProject, isPriority, toDoContainer};
 }
 
 export function newProject() {
@@ -221,6 +255,7 @@ export function newProject() {
 
   newProjectButton.addEventListener("click", () => {
     const dialogData = buildDialog();
+    dialogData.dialog.dataset.currentMode = "add";
     dialogData.dialog.showModal();
   })
 
