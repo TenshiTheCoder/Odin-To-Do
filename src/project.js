@@ -1,6 +1,6 @@
-import { submitProjectForm } from "./barrel.js";
+import { submitProjectForm, themeButton } from "./barrel.js";
+import {saveProjects, loadProjects, deleteProject, clearProjects} from "./storage.js";
 import { format } from "date-fns";
-import { themeButton } from "./themeButton.js";
 import "./styles.css";
 
 
@@ -8,6 +8,10 @@ export let currentProject = null;
 
 const body = document.querySelector("#body");
 const mainContainer = document.querySelector("#main");
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Loaded Projects: ", loadProjects());
+})
 
 export class Project{
   constructor(title, description, dueDate, timeDue, isPriority = false) {
@@ -30,7 +34,10 @@ export function buildDialog() {
   body.append(dialog);
 
   const projectForm = document.createElement("form");
+  projectForm.name = "project-form";
   projectForm.id = "project-form";
+
+  projectForm.addEventListener("submit", submitProjectForm);
 
   const titleInputLabel = document.createElement("label");
   titleInputLabel.classList.add("title-label");
@@ -103,10 +110,6 @@ export function buildDialog() {
   submitButton.type = "submit";
   submitButton.textContent = "Submit";
   submitButton.classList.add("submit-button");
-
-  submitButton.addEventListener("click", () => {
-    submitProjectForm();
-  })
   
   const cancelButton = document.createElement("button");
   cancelButton.type = "button";
@@ -143,6 +146,16 @@ export function buildDialog() {
     currentMode
   };
 };
+
+const savedProjects = loadProjects();
+  savedProjects.forEach(proj => {
+    const projectInstance = new Project(proj.title, proj.description, proj.dateAndTime);
+    projectInstance.id = proj.id;
+    projectInstance.priority = proj.priority;
+    projects.push(projectInstance);
+
+    createProject(projectInstance);
+  });
 
 export function handleProjectEdit(project, { dialog, titleInput, descriptionInput, dateInput, timeInput }) {
   const newTitle = titleInput.value.trim();
@@ -192,6 +205,14 @@ export function createProject(project) {
   editProject.id = "edit-project";
   editProject.textContent = "Edit Project";
 
+  const deleteButton = document.createElement("button");
+  deleteButton.classList.add("delete-project");
+  deleteButton.textContent = "Delete Project";
+
+  deleteButton.addEventListener("click", () => {
+    deleteProject(project.id);
+  })
+
   editProject.addEventListener("click", () => {
   const dialogData = buildDialog();
   const { dialog, titleInput, descriptionInput, dateInput, timeInput } = dialogData;
@@ -207,7 +228,7 @@ export function createProject(project) {
   dialog.showModal();
 });
 
-  projectTop.append(projectTitle, editProject);
+  projectTop.append(projectTitle, editProject, deleteButton);
   
   const projectDescription = document.createElement("p");
   projectDescription.textContent = project.description;
@@ -262,5 +283,18 @@ export function newProject() {
   mainContainer.appendChild(newProjectButton);
 }
 
+export function wipeProjects() {
+  const wipeProjects = document.createElement("button");
+  wipeProjects.classList.add("clear-projects"); 
+  wipeProjects.textContent = "Clear Projects";
+
+  wipeProjects.addEventListener("click", () => {
+    clearProjects();
+  })
+
+  mainContainer.appendChild(wipeProjects);
+}
+
 newProject();
+wipeProjects();
 

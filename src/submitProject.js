@@ -1,18 +1,20 @@
 import { createProject, Project, projects } from "./barrel";
+import { saveProjects, loadProjects } from "./storage";
 import { handleProjectEdit } from "./project";
 import { format } from "date-fns";
 
-export function submitProjectForm() {
-  const projectDialog = document.querySelector("#project-dialog");
-  const projectForm = document.querySelector("#project-form");
-  const titleInput = document.querySelector("#title-input");
-  const descriptionInput = document.querySelector("#description-input");
-  const dateInput = document.querySelector("#date-input");
-  const timeInput = document.querySelector("#time-input");
-  const priority = document.querySelector("#priority-input");
-  
-  projectForm.addEventListener("submit", (e) => {
+
+
+export function submitProjectForm(e) {
     e.preventDefault();
+
+    const projectDialog = document.querySelector("#project-dialog");
+    const projectForm = document.querySelector("#project-form");
+    const titleInput = document.querySelector("#title-input");
+    const descriptionInput = document.querySelector("#description-input");
+    const dateInput = document.querySelector("#date-input");
+    const timeInput = document.querySelector("#time-input");
+    const priority = document.querySelector("#priority-input");
 
     let dateAndTime;
     if (dateInput.value && timeInput.value) {
@@ -44,14 +46,14 @@ export function submitProjectForm() {
         const projectInstance = new Project(
           titleInput.value,
           descriptionInput.value,
-          dateAndTime,
-          priority.checked
+          dateAndTime
       );
       projects.push(projectInstance);
       createProject(projectInstance);
+      saveProjects();
     }
 
     projectDialog.close();
-    projectForm.reset();
-  });
+    projectForm.reset();;
 }
+

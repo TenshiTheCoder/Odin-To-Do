@@ -12,7 +12,5 @@ const initialProject = new Project(
 );
 
 createProject(initialProject);
-projects.push(initialProject);
-// attachListeners(initialProject);
 themeButton();
 
