@@ -1,10 +1,7 @@
-import { submitProjectForm, themeButton } from "./barrel.js";
+import { submitProjectForm, themeButton, renderToDoList, toDoDialog } from "./barrel.js";
 import {saveProjects, loadProjects, deleteProject, clearProjects} from "./storage.js";
 import { format } from "date-fns";
 import "./styles.css";
-
-
-export let currentProject = null;
 
 const body = document.querySelector("#body");
 const mainContainer = document.querySelector("#main");
@@ -12,6 +9,8 @@ const mainContainer = document.querySelector("#main");
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Loaded Projects: ", loadProjects());
 })
+
+
 
 export class Project{
   constructor(title, description, dueDate, timeDue, isPriority = false) {
@@ -26,6 +25,8 @@ export class Project{
 }
 
 export const projects = [];
+
+export let currentProject = null;
 
 // Function to build dialog for project creation
 export function buildDialog() {
@@ -252,8 +253,20 @@ export function createProject(project) {
   isPriority.id = "priority";
   isPriority.checked = project.isPriority;
 
+  const tdButton = document.createElement("button");
+  tdButton.classList.add("td-button");
+  tdButton.textContent = "Add Task";
+
+  const taskDialog = toDoDialog(project);
+
+  tdButton.addEventListener("click", () => {
+    currentProject = project;
+    console.log(`Current project is: ${currentProject.title}`);
+    taskDialog.showModal();
+  })
+
   const toDoContainer = document.createElement("div");
-  toDoContainer.id = "todo-container";
+  toDoContainer.id = "td-container";
 
   projectContainer.append(
     projectTop,
@@ -262,6 +275,9 @@ export function createProject(project) {
     projectTime,
     priorityLabel, 
     isPriority,
+    toDoContainer,
+    tdButton,
+    taskDialog,
     toDoContainer
   );
   mainContainer.appendChild(projectContainer);

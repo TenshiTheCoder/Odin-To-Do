@@ -1,22 +1,21 @@
-import { currentProject, Project } from "./project"
+import { currentProject, Project, projects } from "./project.js";
+import { parseISO, format } from "date-fns";
+import { saveProjects } from "./storage";
+const main = document.querySelector("#main-container");
 
 export function toDoDialog(project){
   const tdDialog = document.createElement("dialog");
-  tdDialog.classList.add = "td-dialog";
+  tdDialog.classList.add("td-dialog");
 
   const tdForm = document.createElement("form");  
-  tdForm.classList.add = "td-form";
+  tdForm.classList.add("td-form")
 
   const tdButton = document.createElement("button");
   tdButton.classList.add("td-open");
   tdButton.textContent = "Add To-Do";
   
-  tdButton.addEventListener("click", () => {
-    tdDialog.showModal;
-  });
-
   const tdTitleLabel = document.createElement("label");
-  tdTitleLabel.classList.add = "title-label";
+  tdTitleLabel.classList.add("title-label");
   tdTitleLabel.htmlFor = "tdTitle";
   tdTitleLabel.textContent = "Title: ";
 
@@ -26,38 +25,37 @@ export function toDoDialog(project){
 
   const tdTaskLabel = document.createElement("label");
   tdTaskLabel.htmlFor = "tdTask";
-  tdTaskLabel.classList.add = "task-label"
+  tdTaskLabel.classList.add("task-label");
   tdTaskLabel.textContent = "Tasks: "
 
   const tdTask = document.createElement("input");
   tdTask.placeholder = "Short description of you task here";
-  tdTask.classList.add = "td-task";
+  tdTask.classList.add("td-task");
 
   const tdDueLabel = document.createElement("label"); 
   tdDueLabel.htmlFor = "tdDueDate";
-  tdDueLabel.classList.add = "due-date-label";
+  tdDueLabel.classList.add("due-date-label");
   tdDueLabel.textContent = "Due Date: ";
 
   const tdDueDate = document.createElement("input");
   tdDueDate.id = "tdDueDate";
   tdDueDate.type = "datetime-local";
 
-  tdForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+  const tdSubmit = document.createElement("button");
+  tdSubmit.classList.add("td-submit");
+  tdSubmit.textContent = "Submit";
 
-    const tdTitleValue = tdTitle.value;
-    const tdTaskValue = tdTask.value;
+  const tdCancel = document.createElement("button");
+  tdCancel.classList.add("td-cancel");
+  tdCancel.textContent = "Cancel";
+  tdCancel.type = "button";
 
-    const rawDate = tdDueDate.value;
-    const formattedDate = new Date(rawDate).toLocaleString("en-US", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-
-    const tdDateValue = formattedDate;
-    const newToDo = {tdTitleValue, tdTaskValue, tdDateValue};
-    currentProject.todos.push(newToDo);
+  tdCancel.addEventListener("click", () => {
+    tdDialog.close();
   })
+
+
+  tdForm.addEventListener("submit", handleTodoSubmit);
 
   tdForm.append(
     tdTitleLabel,
@@ -65,30 +63,56 @@ export function toDoDialog(project){
     tdTaskLabel,
     tdTask,
     tdDueLabel,
-    tdDueDate
+    tdDueDate,
+    tdSubmit,
+    tdCancel
   )
 
-  tdDialog.appendChild(tdForm)
+  tdDialog.appendChild(tdForm);
+
+  return tdDialog;
 };
 
-export function renderToDoList(project){
-  const toDoContainer = currentProject.toDoContainer;
-  toDoContainer.innerHTML = "";
+export function handleTodoSubmit(e) {
+  debugger;
+  e.preventDefault();
 
-  currentProject.todos.forEach(todo => {
+  const todoTitle = document.querySelector("#tdTitle");
+  const todoTask = document.querySelector(".td-task");
+  const todoDate = document.querySelector("#tdDueDate");
+
+  currentProject.todos = currentProject.todos || [];
+  currentProject.todos.push ({
+    id: Date.now(),
+    title: todoTitle.value,
+    description: todoTask.value,
+    dueDate: todoDate.value
+  });
+
+  saveProjects();
+  renderToDoList(currentProject);
+}
+
+export function renderToDoList(project){
+  const toDoContainer = document.querySelector("#td-container");
+
+  project.todos.forEach(todo => {
     const todoItem = document.createElement("div");
     todoItem.classList.add("todo-item");
 
     const titleEl = document.createElement("h3");
-    titleEl.textContent = todo.tdTitleValue;
+    titleEl.textContent = todo.title;
 
     const taskEl = document.createElement("p");
-    taskEl.textContent = todo.tdTaskValue;
+    taskEl.textContent = todo.description;
 
     const dateEl = document.createElement("span");
-    dateEl.textContent = todo.tdDateValue;
+    dateEl.textContent = todo.dueDate;
 
     todoItem.append(titleEl, taskEl, dateEl);
     toDoContainer.appendChild(todoItem);
-  })
+  });
 }
+
+
+
