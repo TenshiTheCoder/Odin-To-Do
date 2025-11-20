@@ -25,8 +25,8 @@ module.exports = {
 
   devServer: {
     port: 3000,
-    hot: false,
-    liveReload: false,
+    hot: true,
+    // liveReload: false,
     open: { app: { name: "chrome" } },
     static: false,
     historyApiFallback: true,

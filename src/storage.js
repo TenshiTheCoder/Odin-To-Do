@@ -1,7 +1,7 @@
 import { createProject, Project, projects } from "./barrel";
 
 export function saveProjects(projects) {
-  localStorage.setItem("projects", JSON.stringify(projects));
+  localStorage.setItem("projects", JSON.stringify(projects || []));
 }
 
 export function loadProjects() {

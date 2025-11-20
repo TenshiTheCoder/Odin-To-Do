@@ -74,7 +74,6 @@ export function toDoDialog(project){
 };
 
 export function handleTodoSubmit(e) {
-  debugger;
   e.preventDefault();
 
   const todoTitle = document.querySelector("#tdTitle");
@@ -89,7 +88,7 @@ export function handleTodoSubmit(e) {
     dueDate: todoDate.value
   });
 
-  saveProjects();
+  saveProjects(projects);
   renderToDoList(currentProject);
 }
 

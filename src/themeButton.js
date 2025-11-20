@@ -14,29 +14,22 @@ export function themeButton() {
   lightTheme.value = "Light";
   lightTheme.textContent = "Light";
 
-  const greyTheme = document.createElement("option");
-  greyTheme.value = "Grey";
-  greyTheme.textContent = "Grey";
-
   const darkTheme = document.createElement("option");
   darkTheme.value = "Dark";
   darkTheme.textContent = "Dark";
 
-  themeSelect.append(lightTheme, greyTheme, darkTheme);
+  themeSelect.append(lightTheme, darkTheme);
   
   if(themeSelect.value === "Light") {
       bodyContainer.classList.add("light-theme");
-      bodyContainer.classList.remove("grey-theme", "dark-theme");
+      bodyContainer.classList.remove("dark-theme");
       footerContainer.classList.add("light-theme");
       footerContainer.classList.remove("dark-theme");
       projectContainer.classList.add("light-theme");
       projectContainer.classList.remove("dark-theme");
-    } else if (themeSelect.value === "Grey") {
-      bodyContainer.classList.add("grey-theme");
-      bodyContainer.classList.remove("light-theme", "dark-theme");
     } else {
       bodyContainer.classList.add("dark-theme");
-      bodyContainer.classList.remove("light-theme", "grey-theme");
+      bodyContainer.classList.remove("light-theme");
       footerContainer.classList.add("dark-theme");
       footerContainer.classList.remove("light-theme");
       projectContainer.classList.add("dark-theme");
@@ -46,18 +39,15 @@ export function themeButton() {
   themeSelect.addEventListener("change", () => {
     if(themeSelect.value === "Light") {
       bodyContainer.classList.add("light-theme");
-      bodyContainer.classList.remove("grey-theme", "dark-theme");
+      bodyContainer.classList.remove("dark-theme");
       footerContainer.classList.add("light-theme");
       footerContainer.classList.remove("dark-theme");
       projectContainer.classList.add("light-theme");
       projectContainer.classList.remove("dark-theme");
       
-    } else if (themeSelect.value === "Grey") {
-      bodyContainer.classList.add("grey-theme");
-      bodyContainer.classList.remove("light-theme", "dark-theme");
     } else {
       bodyContainer.classList.add("dark-theme");
-      bodyContainer.classList.remove("light-theme", "grey-theme");
+      bodyContainer.classList.remove("light-theme");
       footerContainer.classList.add("dark-theme");
       footerContainer.classList.remove("light-theme");
       projectContainer.classList.add("dark-theme");

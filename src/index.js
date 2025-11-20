@@ -1,4 +1,4 @@
-import { Project, createProject, themeButton, projects } from "./barrel";
+import { Project, createProject, themeButton, projects, saveProjects } from "./barrel";
 import { format } from "date-fns";
 import { attachListeners } from "./project";
 
@@ -11,6 +11,9 @@ const initialProject = new Project(
   format(new Date(), "MMMM d, yyyy : h:mm a"),
 );
 
+
 createProject(initialProject);
+projects.push(initialProject);
+saveProjects();
 themeButton();
 

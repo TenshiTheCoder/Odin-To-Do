@@ -1,4 +1,5 @@
-import { submitProjectForm, themeButton, renderToDoList, toDoDialog } from "./barrel.js";
+import { submitProjectForm, themeButton, renderToDoList } from "./barrel.js";
+import { toDoDialog } from "./to-do.js";
 import {saveProjects, loadProjects, deleteProject, clearProjects} from "./storage.js";
 import { format } from "date-fns";
 import "./styles.css";
