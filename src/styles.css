@@ -14,12 +14,18 @@ header {
   margin: auto;
   padding-top: 8px;
   text-align: center;
-  text-shadow: 2px 2px 4px black;
+  text-shadow: 
+  0px 4px 3px rgba(0,0,0,0.4),
+  0px 8px 13px rgba(0,0,0,0.1),
+  0px 18px 23px rgba(0,0,0,0.1);
+
+  font-family: "Caveat", sans-serif;
 }
 
 main { 
-  border: 2px solid black;
+  /* border-top: 1px solid black; */
   height: 87vh;
+  flex-wrap: wrap;
 }
 
 /* Theme Button Styling */
@@ -47,11 +53,6 @@ main {
   color: black;
 }
 
-#body.grey-theme {
-  background-color: silver;
-  color: black;
-}
-
 #body.dark-theme {
   background-color: #121212;
   color: #E0E0E0 ;
@@ -61,20 +62,23 @@ main {
 #project-dialog {
   position: fixed;
   width: 200px;
-  padding: 30px;
+  padding: 15px 25px 15px 25px;
+  border: 1px solid black;
 }
 
+/* Caveat, Varela Round, Saira Condensed*/
+
+/* Project Form styling */
 #project-form {
   display: flex;
   flex-direction: column;
 }
 
-/* Styling for the project creation form and labels */
 .title-label, .description-label,
 .date-label, .time-label {
   margin-bottom: 4px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 700;
+  font-family: "Saira Condensed", sans-serif;
+  font-weight: 1000;
 } 
 
 #title-input, #description-input,
@@ -92,10 +96,10 @@ main {
   outline: none;
 }
 
+/* This container is also in the created projects */
 .priority-container {
   display: flex;
-  justify-content: center;
-  margin-top: 4px;
+  justify-content: flex-start;
   margin-bottom: 16px;
 }
 
@@ -112,26 +116,62 @@ main {
   transition: 0.4s ease-in-out;
   box-shadow: 2px 2px 2px black;
   perspective: 10px;
+  font-family: "Saira Condensed", sans-serif;
 }
 
 .submit-button:hover, .cancel-button:hover {
   cursor: pointer;
   transform: scale(1.1);
   outline: 2px black;
-  
+}
+
+/* To-Do Dialog Styling */
+.td-dialog {
+  position: fixed;
+  width: 200px;
+  padding: 15px 25px 15px 25px;
+  border: 1px solid black;
+}
+
+/* To-Do Form Styling */
+.td-title-label, .task-label, 
+.td-date-label {
+  font-family: "Saira Condensed", sans-serif;
+  font-weight: 500;
+}
+
+.td-form > input {
+  margin-bottom: 12px;
+}
+
+.td-form > button {
+  margin-top: 12px;
+  font-family: "Saira Condensed", sans-serif;
+  padding: 1px 4px 1px 4px;
+}
+
+.td-submit {
+  margin-right: 8px;
 }
 
 /* Project Styling */
-.new-project {
+.new-project, .clear-projects {
   position: fixed;
   margin-bottom: 0px;
-  padding: 4px;
+  padding: 2px;
   font-size: 12px;
-  top: 22px;
-  left: 20px;
+  top: 26px;
+  left: 12px;
   border-radius: 25px;
   border: 1px solid black;
-  width: 9%;
+  min-width: 90px;
+  max-width: 100px;
+  font-family: "Varela Round", sans-serif;
+}
+
+.clear-projects {
+  left: 102px;
+  margin-left: 8px;
 }
 
 .project-container {
@@ -143,10 +183,11 @@ main {
   margin-right: auto;
   align-items: left;
   padding: 12px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .project-container.light-theme {
-  border: 2px solid black;
+  border: 1px solid black;
 }
 
 .project-container.dark-theme {
@@ -156,14 +197,25 @@ main {
 /* Styling for the button to edit the project */
 #edit-project {
   align-items: center;
-  font-size: 14px;
-  font-family: "Lato", sans-serif;
-  font-weight: 600;
   margin-left: auto;
+  margin-right: 12px;
+  box-shadow: 0px 1px 3px grey;
+  border: none;
+  outline: none;
+  background-color: white;
+  height: 20px;
 }
 
 button:hover {
   cursor: pointer;
+}
+
+.delete-project {
+  outline: none;
+  border: none;
+  box-shadow: 0px 1px 3px grey;
+  background: none;
+  height: 20px;
 }
 
 .project-top {
@@ -172,32 +224,37 @@ button:hover {
 }
 
 .project-title {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
+  font-family: "Saira Condensed", sans-serif;
+  font-size: 20px;
   text-wrap: nowrap;
   margin-top: auto;
   margin-right: 10px;
   margin-bottom: 0;
   text-align: left;
-  align-items: center;
 }
 
 .project-description {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 12px; 
+  margin-top: 8px;
 }
 
 .project-date { 
   font-size: 14px;
   font-family: Arial, Helvetica, sans-serif;
   margin-bottom: 0;
+  margin-top: 0;
 }
 
-/* To-Do dialog styling */
-
-
-/* To-Do Styling */
-
+.td-button {
+  width: fit-content;
+  border-radius: 4px;
+  border: 1px solid black;
+  padding: 2px 4px 2px 4px;
+  font-family: "Varela Round", sans-serif;
+  font-weight: 300;
+  background-color: white;
+}
 
 /* Footer Styling */
 footer {
@@ -225,10 +282,11 @@ footer.dark-theme {
 }
 
 .my-github {
+  margin: 10px;
   display: block;
   text-decoration: none;
   text-align: center;
-  color: white;
+  color: rgb(0, 225, 255);
   transition: 0.3s ease-in-out;
 }
 
@@ -239,9 +297,6 @@ footer.dark-theme {
   text-decoration: underline;
 }
 
-.my-github:visited {
-  color: magenta;
-}
 
 
 

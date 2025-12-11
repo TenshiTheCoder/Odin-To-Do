@@ -15,7 +15,7 @@ export function toDoDialog(project){
   tdButton.textContent = "Add To-Do";
   
   const tdTitleLabel = document.createElement("label");
-  tdTitleLabel.classList.add("title-label");
+  tdTitleLabel.classList.add("td-title-label");
   tdTitleLabel.htmlFor = "tdTitle";
   tdTitleLabel.textContent = "Title: ";
 
@@ -31,11 +31,12 @@ export function toDoDialog(project){
   const tdTask = document.createElement("input");
   tdTask.placeholder = "Short description of you task here";
   tdTask.classList.add("td-task");
+  tdTask.id = "tdTask";
 
   const tdDueLabel = document.createElement("label"); 
   tdDueLabel.htmlFor = "tdDueDate";
-  tdDueLabel.classList.add("due-date-label");
-  tdDueLabel.textContent = "Due Date: ";
+  tdDueLabel.classList.add("td-date-label");
+  tdDueLabel.textContent = " Due Date: ";
 
   const tdDueDate = document.createElement("input");
   tdDueDate.id = "tdDueDate";

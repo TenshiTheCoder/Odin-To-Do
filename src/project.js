@@ -204,12 +204,12 @@ export function createProject(project) {
   projectTitle.classList.add("project-title");
   
   const editProject = document.createElement("button");
-  editProject.id = "edit-project";
-  editProject.textContent = "Edit Project";
+  editProject.id = "edit-project-${project.id}";
+  editProject.innerHTML = `<i class="fa-solid fa-pen"></i>`;
 
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("delete-project");
-  deleteButton.textContent = "Delete Project";
+  deleteButton.innerHTML = `<i class="fa-solid fa-trash"></i>`;
 
   deleteButton.addEventListener("click", () => {
     deleteProject(project.id);
@@ -237,7 +237,7 @@ export function createProject(project) {
   projectDescription.classList.add("project-description");
 
   const projectDate = document.createElement("p");
-  projectDate.textContent = project.dueDate;
+  projectDate.textContent = project.formattedDate;
   projectDate.classList.add("project-date");
 
   const projectTime = document.createElement("p");
@@ -254,6 +254,11 @@ export function createProject(project) {
   isPriority.id = "priority";
   isPriority.checked = project.isPriority;
 
+  const priorityContainer = document.createElement("div");
+  priorityContainer.classList.add("priority-container");
+
+  priorityContainer.append(priorityLabel, isPriority);
+
   const tdButton = document.createElement("button");
   tdButton.classList.add("td-button");
   tdButton.textContent = "Add Task";
@@ -267,16 +272,14 @@ export function createProject(project) {
   })
 
   const toDoContainer = document.createElement("div");
-  toDoContainer.id = "td-container";
+  toDoContainer.id = "td-container-${project.id}";
 
   projectContainer.append(
     projectTop,
     projectDescription,
     projectDate, 
     projectTime,
-    priorityLabel, 
-    isPriority,
-    toDoContainer,
+    priorityContainer,
     tdButton,
     taskDialog,
     toDoContainer
@@ -290,6 +293,7 @@ export function newProject() {
   const newProjectButton = document.createElement("button");
   newProjectButton.classList.add("new-project");
   newProjectButton.textContent = "New Project";
+  // newProjectButton.innerHTML = `<i class="fa-solid fa-plus"></i>`
 
   newProjectButton.addEventListener("click", () => {
     const dialogData = buildDialog();

@@ -7,6 +7,7 @@ export function themeButton() {
   const projectContainer = document.querySelector(".project-container");
 
   const themeSelect = document.createElement("select");
+  themeSelect.name = "themeSelect";
   themeSelect.classList.add("theme-select");
 
   const lightTheme = document.createElement("option");
