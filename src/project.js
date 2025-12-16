@@ -94,13 +94,58 @@ export function buildDialog() {
   priorityInputLabel.htmlFor = "priority-input";
   priorityInputLabel.textContent = "Priority: ";
 
-  const priorityInput = document.createElement("input");
-  priorityInput.type = "checkbox";
-  priorityInput.name = "priority";
-  priorityInput.id = "priority-input";
-  priorityInput.checked = false;
+  priorityContainer.classList.add("priority-container");
 
-  priorityContainer.append(priorityInputLabel, priorityInput);
+  const prioritySelect = document.createElement("select");
+  prioritySelect.classList.add("priority-button");
+  prioritySelect.id = "priority";
+
+  const priorityZero = document.createElement("option");
+  priorityZero.selected = true;
+  priorityZero.value = "0";
+  priorityZero.textContent = "P0";
+  priorityZero.classList.add("priority-zero");
+
+  const priorityOne = document.createElement("option");
+  priorityOne.value = "1";
+  priorityOne.textContent = "P1";
+  priorityOne.classList.add("priority-one");
+
+  const priorityTwo = document.createElement("option");
+  priorityTwo.value = "2";
+  priorityTwo.textContent = "P2";
+  priorityTwo.classList.add("priority-two");
+
+  const priorityThree = document.createElement("option");
+  priorityThree.value = "3";
+  priorityThree.textContent = "P3";
+  priorityThree.classList.add("priority-three");
+
+  prioritySelect.append(priorityZero, priorityOne, priorityTwo, priorityThree);
+
+  function changePriorityLevel () {
+      const projectContainer = document.querySelector(`#project-${currentProject.id}`);
+
+      if (prioritySelect.value === "0") {
+        projectContainer.classList.add("no-priority");
+        projectContainer.classList.remove("priority-blue", "priority-green", "priority-red");
+    } else if (prioritySelect.value === "1") {
+        projectContainer.classList.add("priority-green");
+        projectContainer.classList.remove("no-priority", "priority-blue", "priority-red");
+    } else if (prioritySelect.value === "2") {
+        projectContainer.classList.add("priority-blue");
+        projectContainer.classList.remove("no-priority","priority-green","priority-red");
+    } else if (prioritySelect.value === "3") {
+        projectContainer.classList.add("priority-red");
+        projectContainer.classList.remove("no-priority","priority-blue","priority-green");
+    }
+  }
+
+  prioritySelect.addEventListener("change", () => {
+    changePriorityLevel(currentProject.id);
+  })
+
+  priorityContainer.append(priorityInputLabel, prioritySelect);
   priorityContainer.classList.add("priority-container");
 
   let currentMode = "create";
@@ -144,7 +189,6 @@ export function buildDialog() {
     descriptionInput,
     dateInput, 
     timeInput, 
-    priorityInput, 
     currentMode
   };
 };
@@ -153,7 +197,7 @@ const savedProjects = loadProjects();
   savedProjects.forEach(proj => {
     const projectInstance = new Project(proj.title, proj.description, proj.dateAndTime);
     projectInstance.id = proj.id;
-    projectInstance.priority = proj.priority;
+    projectInstance.isPriority = proj.priority;
     projects.push(projectInstance);
 
     createProject(projectInstance);
@@ -204,7 +248,8 @@ export function createProject(project) {
   projectTitle.classList.add("project-title");
   
   const editProject = document.createElement("button");
-  editProject.id = "edit-project-${project.id}";
+  editProject.id = `edit-project-${project.id}`;
+  editProject.classList.add("edit-project");
   editProject.innerHTML = `<i class="fa-solid fa-pen"></i>`;
 
   const deleteButton = document.createElement("button");
@@ -216,18 +261,20 @@ export function createProject(project) {
   })
 
   editProject.addEventListener("click", () => {
-  const dialogData = buildDialog();
-  const { dialog, titleInput, descriptionInput, dateInput, timeInput } = dialogData;
+    currentProject = project;
+    const dialogData = buildDialog();
+    const { dialog, titleInput, descriptionInput, dateInput, timeInput } = dialogData;
+    dialog.projectContainer = projectContainer;
 
-  dialog.dataset.currentMode = "edit";
-  dialog.dataset.projectId = project.id;
+    dialog.dataset.currentMode = "edit";
+    dialog.dataset.projectId = project.id;
 
-  titleInput.value = project.title;
-  descriptionInput.value = project.description;
-  dateInput.value = project.dueDate || "";
-  timeInput.value = project.timeDue || "";
+    titleInput.value = project.title;
+    descriptionInput.value = project.description;
+    dateInput.value = project.dueDate || "";
+    timeInput.value = project.timeDue || "";
 
-  dialog.showModal();
+    dialog.showModal();
 });
 
   projectTop.append(projectTitle, editProject, deleteButton);
@@ -243,21 +290,6 @@ export function createProject(project) {
   const projectTime = document.createElement("p");
   projectTime.textContent = project.timeDue;
   projectTime.classList.add("project-time");
-
-  const priorityLabel = document.createElement("label");
-  priorityLabel.textContent = "Is Priority: ";
-  priorityLabel.htmlFor = "priority";
-
-  const isPriority = document.createElement("input");
-  isPriority.type = "checkbox";
-  isPriority.classList.add("priority-button");
-  isPriority.id = "priority";
-  isPriority.checked = project.isPriority;
-
-  const priorityContainer = document.createElement("div");
-  priorityContainer.classList.add("priority-container");
-
-  priorityContainer.append(priorityLabel, isPriority);
 
   const tdButton = document.createElement("button");
   tdButton.classList.add("td-button");
@@ -279,21 +311,19 @@ export function createProject(project) {
     projectDescription,
     projectDate, 
     projectTime,
-    priorityContainer,
     tdButton,
     taskDialog,
     toDoContainer
   );
   mainContainer.appendChild(projectContainer);
 
-  return {editProject, isPriority, toDoContainer};
+  return {editProject, toDoContainer, projectContainer};
 }
 
 export function newProject() {
   const newProjectButton = document.createElement("button");
   newProjectButton.classList.add("new-project");
   newProjectButton.textContent = "New Project";
-  // newProjectButton.innerHTML = `<i class="fa-solid fa-plus"></i>`
 
   newProjectButton.addEventListener("click", () => {
     const dialogData = buildDialog();
