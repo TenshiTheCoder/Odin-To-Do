@@ -3,8 +3,6 @@ import {Project} from "./barrel.js";
 export function themeButton() {
   const headerContainer = document.querySelector("#main-header");
   const bodyContainer = document.querySelector("#body");
-  const footerContainer = document.querySelector("#footer");
-  const projectContainer = document.querySelector(".project-container");
 
   const themeSelect = document.createElement("select");
   themeSelect.name = "themeSelect";
