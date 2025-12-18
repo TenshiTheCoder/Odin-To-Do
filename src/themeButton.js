@@ -11,7 +11,6 @@ export function themeButton() {
   themeSelect.classList.add("theme-select");
 
   const lightTheme = document.createElement("option");
-  lightTheme.selected = true;
   lightTheme.value = "Light";
   lightTheme.textContent = "Light";
 
@@ -21,39 +20,26 @@ export function themeButton() {
 
   themeSelect.append(lightTheme, darkTheme);
   
-  if(themeSelect.value === "Light") {
-      bodyContainer.classList.add("light-theme");
-      bodyContainer.classList.remove("dark-theme");
-      footerContainer.classList.add("light-theme");
-      footerContainer.classList.remove("dark-theme");
-      projectContainer.classList.add("light-theme");
-      projectContainer.classList.remove("dark-theme");
-    } else {
-      bodyContainer.classList.add("dark-theme");
-      bodyContainer.classList.remove("light-theme");
-      footerContainer.classList.add("dark-theme");
-      footerContainer.classList.remove("light-theme");
-      projectContainer.classList.add("dark-theme");
-      projectContainer.classList.remove("light-theme");
-    }
+  const savedTheme = localStorage.getItem("user-theme");
+  if (savedTheme) {
+    themeSelect.value = savedTheme;
+  } 
 
-  themeSelect.addEventListener("change", () => {
+  function applyTheme() {
     if(themeSelect.value === "Light") {
       bodyContainer.classList.add("light-theme");
       bodyContainer.classList.remove("dark-theme");
-      footerContainer.classList.add("light-theme");
-      footerContainer.classList.remove("dark-theme");
-      projectContainer.classList.add("light-theme");
-      projectContainer.classList.remove("dark-theme");
-      
     } else {
       bodyContainer.classList.add("dark-theme");
       bodyContainer.classList.remove("light-theme");
-      footerContainer.classList.add("dark-theme");
-      footerContainer.classList.remove("light-theme");
-      projectContainer.classList.add("dark-theme");
-      projectContainer.classList.remove("light-theme");
     }
+  }
+
+  applyTheme();
+
+  themeSelect.addEventListener("change", () => {
+    applyTheme();
+    localStorage.setItem("user-theme", themeSelect.value);
   });
 
   headerContainer.append(themeSelect);

@@ -189,11 +189,11 @@ main {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-.project-container.light-theme {
+.light-theme .project-container {
   border: 2px solid black;
 }
 
-.project-container.dark-theme {
+.dark-theme .project-container {
   border: 2px solid white;
 }
 
@@ -272,6 +272,7 @@ button:hover {
   font-weight: 300;
   font-size: 12px;
   background-color: white;
+  margin-top: 8px;
 }
 
 /* Footer Styling */
