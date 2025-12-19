@@ -10,6 +10,10 @@ header {
   text-align: center;
 }
 
+header.dark-theme  {
+  background-color: #20232a;
+}
+
 .main-heading {
   margin: auto;
   padding-top: 8px;
@@ -46,10 +50,6 @@ main {
   background: none;
 }
 
-.theme-select:hover {
-  cursor: pointer;
-}
-
 /* Main body theme styling */
 #body.light-theme {
   background-color: white;
@@ -57,8 +57,8 @@ main {
 }
 
 #body.dark-theme {
-  background-color: #121212;
-  color: #E0E0E0 ;
+  background-color: #0f1115;
+  color: #E0E0E0;
 }
 
 /* Project dialog styling */
@@ -123,7 +123,6 @@ main {
 }
 
 .submit-button:hover, .cancel-button:hover {
-  cursor: pointer;
   transform: scale(1.1);
   outline: 2px black;
 }
@@ -178,6 +177,19 @@ main {
   margin-left: 8px;
 }
 
+body.dark-theme .theme-select,
+body.dark-theme .clear-projects,
+body.dark-theme .new-project {
+  background-color: #f2f4f8;
+  color: #1f2933;
+  border: 1px solid #d1d5db;
+  transition: 0.5s ease-in-out;
+}
+
+body.dark-theme .new-project:hover, .clear-projects:hover, .theme-select:hover {
+  background: #e6e9ef;
+} 
+
 .project-container {
   display: flex;
   flex-direction: column;
@@ -194,7 +206,9 @@ main {
 }
 
 .dark-theme .project-container {
-  border: 2px solid white;
+  border: 1px solid #2c313c;
+  background-color: #1c1f26;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .project-container.no-priority {
@@ -233,7 +247,7 @@ main {
   height: 20px;
 }
 
-button:hover {
+button:hover, a:hover, select:hover {
   cursor: pointer;
 }
 
@@ -269,8 +283,8 @@ button:hover {
   border: 1px solid black;
   padding: 2px 4px 2px 4px;
   font-family: "Varela Round", sans-serif;
-  font-weight: 300;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: 0.72rem;
   background-color: white;
   margin-top: 8px;
 }
@@ -291,8 +305,8 @@ footer.light-theme {
 }
 
 footer.dark-theme {
-  background-color: #444444;
-  box-shadow: 0 -2px 3px 1px #FAFAFA;
+  background-color: #20232a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
 .my-name {
@@ -310,7 +324,6 @@ footer.dark-theme {
 }
 
 .my-github:hover {
-  cursor: pointer;
   transform: scale(1.1);
   color: pink;
   text-decoration: underline;
